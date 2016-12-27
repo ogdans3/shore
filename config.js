@@ -17,8 +17,9 @@ function Config(app){
 					}
 	var songs = path.join(__dirname, "/songs");
 	var routes = path.join(srcPath, "/routes"); 
+	var db = path.join(__dirname, "/db");
 
-	self.paths = {static: static, songs: songs, routes: routes};
+	self.paths = {static: static, songs: songs, routes: routes, db: db};
 	
 	console.log("Config object:", self)
 }

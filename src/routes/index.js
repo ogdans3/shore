@@ -4,7 +4,7 @@ var path = require('path');
 exports.createRoutes = function(app){
 	var config = app.get("config");
 
-	//Define gets
+	//Define get requests
 	app.get('/song/:id', function (req, res){
 	    res.sendFile(path.join(config.paths.songs, req.params.id));
 	});
@@ -22,4 +22,29 @@ exports.createRoutes = function(app){
 	app.get('/', function (req, res){
  		res.render("home");
 	});
+
+	app.get("/api/get/playlists", function(req, res){
+		app.get("dbs").playlists.find({}).sort({title: 1}).exec(function(err, playlists){
+			res.send(playlists);
+		});
+	});
+
+	//Define post requests
+	app.post("/api/new/playlist", function(req, res){
+		console.log("New playlist");
+		console.log(req.body)
+		var playlist = {
+			title: req.body.title,
+			songs: req.body.songs || [],
+			editable: true
+		};
+
+		app.get("dbs").playlists.insert(playlist, function(err, newDoc){
+			if(err)
+				res.send("Error");
+			else
+				res.send(newDoc);
+		})
+	})
+
 }
