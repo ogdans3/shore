@@ -86,10 +86,14 @@ var previousTrack = function(){
 }
 
 var playTrack = function(song){
-	$("#playback").attr("src", queue.prefix + "/" + song);
+	var title = song;
+	if(song.title)
+		title = song.title;
+
+	$("#playback").attr("src", queue.prefix + "/" + title);
 	console.log(audio.currentSrc)
 	audio.load();
-	audio.play(); 
+	audio.play();
 }
 
 var setPlayBackTime = function(time){

@@ -42,9 +42,4 @@ var addPlaylistToList = function(playlistObj){
 	$("#entitybar ul.playlists").append(ele);
 }
 
-//This function shows all the songs in the playlist in the main view of the application
-//TODO: implement
-var showPlaylist = function(playlistObj){
-}
-
 getAllPlaylists();

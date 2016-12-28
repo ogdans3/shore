@@ -7,3 +7,9 @@ html, body{
 .pointer:hover{
 	cursor: pointer;
 }
+
+ul.pretty{
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+}
