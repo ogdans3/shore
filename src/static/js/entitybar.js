@@ -50,7 +50,7 @@ var getPlaylistIndex = function(playlistObj){
 //TODO: Move to data file
 var getSongIndex = function(songObj){
 	for(var i = 0; i < songs.length; i++){
-		if(songObj[i]._id == songObj._id)
+		if(songs[i]._id == songObj._id)
 			return i;
 	}
 	return -1;

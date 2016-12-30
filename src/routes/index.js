@@ -1,4 +1,5 @@
-var path = require('path');
+var path = require("path");
+var scan = require(path.join(path.join(__dirname, "/.."), "/scan")); //TODO: Clean this up, should prob use the app file paths
 
 //Create all routes for the application
 exports.createRoutes = function(app){
@@ -37,6 +38,17 @@ exports.createRoutes = function(app){
 
 
 	//Define post requests
+	app.post("/api/scan/rescan", function(req, res){
+		console.log("Perform a rescan of the library");
+		console.log(req.body);
+
+		//TODO: this needs to overwrite a path that is written into a txt file or something. 
+		//So that on a restart of the server the same library is accessed
+		var path = req.body.libraryPath;
+		scan(app, path);
+	})
+
+
 	app.post("/api/playlist/new", function(req, res){
 		console.log("New playlist");
 		console.log(req.body)

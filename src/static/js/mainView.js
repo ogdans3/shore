@@ -31,7 +31,7 @@ var getSongElement = function(songObj){
 	li += songObj.title;
 	li += "</span>";
 
-	li += "<span class = 'flex grow textAlignCenter first'>";
+	li += "<span class = 'flex grow textAlignCenter second alignRight'>";
 	li += songObj.duration || "Unknown";
 	li += "</span>"
 

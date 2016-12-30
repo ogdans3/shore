@@ -35,3 +35,13 @@
 	flex-grow: 1;
 	display: flex;
 }
+
+.container.song.element span{
+	text-align: left !important;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.container.song.element span.alignRight{
+	text-align: right !important;
+}
