@@ -1,7 +1,7 @@
 .mainView.container{
 	flex-grow: 1;
 	background: blue;
-	overflow: auto;
+/*	overflow: auto;*/
 }
 
 .listTitle{
@@ -28,4 +28,10 @@
 
 #songList li:hover{
 	cursor: pointer;
+}
+
+.container.song.element{
+	width: 100%;
+	flex-grow: 1;
+	display: flex;
 }

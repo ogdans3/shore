@@ -131,6 +131,15 @@ if(audio.played){
 setDuration(audio.duration);
 
 
+var addNewTrackToPlaylist = function(song, playlist){
+	console.log("Add new song to playlist");
+	console.log(song);
+	console.log(playlist);
+	$.post("/api/playlist/add", {songId: song._id, playlistId: playlist._id}, function(res){
+		console.log("Response", res);
+		//TODO: Handle error for unable to add song to playlist
+	})
+}
 
 
 

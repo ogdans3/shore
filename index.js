@@ -5,10 +5,12 @@ var bodyParser = require("body-parser");
 var app = express();
 
 //Set config for the application
-app.set('config', require(__dirname + '/config')(app));
+app.set("config", require(__dirname + "/config")(app));
 
 //Set all the databases for the application
-app.set('dbs', require(__dirname + '/db')(app));
+app.set("dbs", require(__dirname + "/db")(app));
+
+//app.get("dbs").songs.insert({title: "Test", artist: "Unknown", duration: 120}, function(){});
 
 //Set up body parser for html forms
 app.use(bodyParser.urlencoded({ extended: true }));
