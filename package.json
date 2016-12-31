@@ -20,9 +20,11 @@
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "express-handlebars": "^3.0.0",
+    "fluent-ffmpeg": "^2.1.0",
     "handlebars": "^4.0.6",
     "musicmetadata": "^2.0.5",
     "nedb": "^1.8.0",
-    "recursive-readdir": "^2.1.0"
+    "recursive-readdir": "^2.1.0",
+    "ytdl-core": "^0.7.21"
   }
 }

@@ -1,5 +1,6 @@
 var path = require("path");
 var scan = require(path.join(path.join(__dirname, "/.."), "/scan")); //TODO: Clean this up, should prob use the app file paths
+var ytdl = require(path.join(path.join(__dirname, "/.."), "/youtube/download.js")); //TODO: Clean this up, should prob use the app file paths
 
 //Create all routes for the application
 exports.createRoutes = function(app){
@@ -38,6 +39,25 @@ exports.createRoutes = function(app){
 
 
 	//Define post requests
+	app.post("/api/songs/new", function(req, res){
+		console.log("Add new song");
+		console.log(req.body);
+		var path = app.get("config").paths.songs;
+
+		switch(req.body.method){
+			case "youtube":
+				ytdl(path, req.body.url, function(err){
+					if(err)
+						res.send("Unable to add song", err);
+					else
+						res.send("Song added");
+				});
+				break;
+			default:
+				res.send("Unknown method for adding a song");
+		}
+	})
+
 	app.post("/api/scan/rescan", function(req, res){
 		console.log("Perform a rescan of the library");
 		console.log(req.body);
