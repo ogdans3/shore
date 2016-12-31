@@ -1,6 +1,48 @@
 var path = require("path");
 var scan = require(path.join(path.join(__dirname, "/.."), "/scan")); //TODO: Clean this up, should prob use the app file paths
 var ytdl = require(path.join(path.join(__dirname, "/.."), "/youtube/download.js")); //TODO: Clean this up, should prob use the app file paths
+var mm = require('musicmetadata');
+var fs = require("fs");
+
+var getFileName = function(filepath){
+        return path.basename(filepath, path.extname(filepath));
+}
+
+
+var addSong = function(db, song, cb){
+        db.find({title: song.title}, function(err, docs){
+                if(err)
+                        console.log(err);
+                else{
+                        if(docs.length == 0){
+                                db.insert(song, function(err, doc){
+                                        console.log("Insert of new song", "Error", err, "NewDoc", doc);
+                                        cb();
+                                });
+                        }else
+                                console.log("Song already inserted");
+                }
+                cb();
+        });
+}
+
+var processSong = function(filepath, cb){
+	 var parser = mm(fs.createReadStream(filepath), {duration: true}, function(err, metadata){
+                if(err){
+                        console.log("Error happened", filepath, err);
+                        return;
+                }
+                console.log(metadata);
+                //TODO: Add more fields here
+                var song = {
+                        title: getFileName(filepath),
+                        duration: metadata.duration
+                }
+                console.log("Song", song);
+		cb(song);
+        });
+}
+
 
 //Create all routes for the application
 exports.createRoutes = function(app){
@@ -46,17 +88,23 @@ exports.createRoutes = function(app){
 
 		switch(req.body.method){
 			case "youtube":
-				ytdl(path, req.body.url, function(err){
+				ytdl(path, req.body.url, function(err, finalPath){
 					if(err)
 						res.send("Unable to add song", err);
-					else
-						res.send("Song added");
+					else{
+						processSong(finalPath, function(song){
+							addSong(app.get("dbs").songs, song, function(){
+								res.send("Song added1");
+							});
+						});
+					}
 				});
 				break;
 			default:
+				console.log("Default method for adding a new song is returning an error");
 				res.send("Unknown method for adding a song");
 		}
-	})
+	});
 
 	app.post("/api/scan/rescan", function(req, res){
 		console.log("Perform a rescan of the library");
