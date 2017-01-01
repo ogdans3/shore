@@ -26,6 +26,7 @@ var getAllPlaylists = function(){
 var getAllSongs = function(){
 	$.get("/api/get/songs", function(res){
 		for(var i = 0; i < res.length; i++){
+			console.log(res);
 			if(getSongIndex(res[i]) != -1){
 				songs[getSongIndex(res[i])] = res[i];
 			}else
