@@ -29,19 +29,7 @@ watch(app, function(list){
 	var songs = require(app.get("config").paths.src.srcPath + "/songs");
 	var path = app.get("config").paths.songs;
 
-	var processElement = function(element, cb){
-		console.log("Element", element);
-
-		songs.add(element.method, element.url, path, function(what, diag){
-			if(!diag)
-				console.log("Song added");
-			else
-				console.log("Unable to add song")
-			console.log(what, diag);
-			cb(processElement);
-		});
-	}
-	util.processListSync(list, processElement);
+	util.addAllSongs(songs, path, list);	
 });
 
 //Create all the routes for the application

@@ -19,13 +19,14 @@ function Config(app){
 	var routes = path.join(srcPath, "/routes"); 
 	var db = path.join(__dirname, "/db");
 	var youtubeSrc = path.join(srcPath, "/youtube");
+	var util = path.join(__dirname, "/util");
 
 	var src = {
 		srcPath: srcPath,
 		youtube: youtubeSrc
 	}
 
-	self.paths = {static: static, songs: songs, routes: routes, db: db, src: src};
+	self.paths = {static: static, songs: songs, routes: routes, db: db, src: src, util: util};
 	
 	console.log("Config object:", self)
 }

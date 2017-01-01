@@ -1,6 +1,7 @@
 var path = require("path");
 var fs = require("fs");
 var ytdl = require(path.join(path.join(__dirname, "/.."), "/youtube/download.js")); //TODO: Clean this up, should prob use the app file paths
+var mm = require('musicmetadata');
 var app;
 
 

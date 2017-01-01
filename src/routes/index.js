@@ -5,10 +5,11 @@ var ytdl = require(path.join(path.join(__dirname, "/.."), "/youtube/download.js"
 var mm = require('musicmetadata');
 var fs = require("fs");
 
+var util;
+
 var getFileName = function(filepath){
         return path.basename(filepath, path.extname(filepath));
 }
-
 
 var addSong = function(db, song, cb){
         db.find({title: song.title}, function(err, docs){
@@ -48,6 +49,8 @@ var processSong = function(filepath, cb){
 
 //Create all routes for the application
 exports.createRoutes = function(app){
+	util = require(app.get("config").paths.util);
+
 	songs.initialise(app);
 	var config = app.get("config");
 
@@ -112,13 +115,23 @@ exports.createRoutes = function(app){
 						res.send("Watched object was added");
 					}
 					//The object was added, so we scan all the objects.
-					app.get("watch")(app);
+					app.get("watch")(app, function(list){
+						var songs = require(app.get("config").paths.src.srcPath + "/songs");
+						var path = app.get("config").paths.songs;
+
+						util.addAllSongs(songs, path, list);	
+					});
 				});
 			}else{
 				res.send("Watched object was already added");
 				//The object was already present but we want to rescan the object to find new entities
 				//Most likely there will be something new or else the user would probably not try to add it again
-				app.get("watch")(app);
+				app.get("watch")(app, function(list){
+					var songs = require(app.get("config").paths.src.srcPath + "/songs");
+					var path = app.get("config").paths.songs;
+
+					util.addAllSongs(songs, path, list);	
+				});
 			}
 		})
 	})
