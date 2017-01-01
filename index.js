@@ -36,7 +36,6 @@ watch(app, function(list){
 
 	util.addAllSongs(songs, path, list, function(successList, failList){
 		console.log("Initial scan of all watched objects has ended");
-		console.log("Succesfully added", successList.length, "of", successList.length + failList.length, "songs");
 	});
 });
 
