@@ -12,10 +12,7 @@ var getFileName = function(filepath){
 }
 
 var addSong = function(db, song, cb){
-	console.log("Song to add", song);
-	
 	db.find({$or: [{_id: song._id}, {title: song.title}, {_id: song.title}, {title: song._id}]}).exec(function(err, docs){
-		console.log(err, docs);
 		if(err)
 			cb(err)
 		else{
@@ -24,7 +21,7 @@ var addSong = function(db, song, cb){
 					cb();
 				});
 			}else{
-				cb();
+				cb("Song already added");
 			}
 		}
 	});
@@ -54,8 +51,11 @@ var addFromYoutube = function(path, url, cb){
 			cb(null, err);
 		else{
 			processSong(finalPath, function(song){
-				addSong(app.get("dbs").songs, song, function(){
-					cb(song);
+				addSong(app.get("dbs").songs, song, function(err){
+					if(err)
+						cb(null, err);
+					else
+						cb(song);
 				});
 			});
 		}
@@ -64,8 +64,11 @@ var addFromYoutube = function(path, url, cb){
 
 var addFromLocal = function(path, url, cb){
 	processSong(url, function(song){
-		addSong(app.get("dbs").songs, song, function(){
-			cb(song);
+		addSong(app.get("dbs").songs, song, function(err){
+			if(err)
+				cb(null, err);
+			else
+				cb(song);
 		});
 	});	
 }
