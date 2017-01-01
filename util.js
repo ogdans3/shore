@@ -20,7 +20,8 @@ var processListSync = function(list, func, finalCB){
 		if(list.length > 0)
 			processListSync(list, func, finalCB);
 		else{
-			finalCB();
+			if(finalCB)
+				finalCB();
 		}
 	})
 }
