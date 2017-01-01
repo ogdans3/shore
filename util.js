@@ -1,33 +1,34 @@
-var addAllSongs = function(songsModule, path, list){	
-	var processElement = function(element, cb){
-		console.log("Element", element);
+const uuidV1 = require('uuid/v1');
 
-		try{
-			songsModule.add(element.method, element.url, path, function(what, diag){
-				if(!diag)
-					console.log("Song added");
-				else
-					console.log("Unable to add song")
-				console.log(what, diag);
-				cb(processElement);
-			});
-		}catch(e){
-			console.log("We had an error", e);
+var addAllSongs = function(songsModule, path, list, finalCB){
+	var processElement = function(element, cb){
+		songsModule.add(element.method, element.url, path, function(what, diag){
+			if(!diag)
+				console.log("Song added");
+			else
+				console.log("Unable to add song", what, "\n", diag, "\n");
+			//Continue to process the list even if an error occured
 			cb(processElement);
-		}
+		});
 	}
-	processListSync(list, processElement);
+	processListSync(list, processElement, finalCB);
 }
 
-var processListSync = function(list, func){
+var processListSync = function(list, func, finalCB){
 	var ele = list.shift();
 	func(ele, function(func){
 		if(list.length > 0)
-				processListSync(list, func);
+			processListSync(list, func, finalCB);
+		else{
+			finalCB();
+		}
 	})
 }
 
+var uuid = uuidV1 //-> '6c84fb90-12c4-11e1-840d-7b25c5ee775a' 
+
 module.exports = {
 	processListSync: processListSync,
-	addAllSongs: addAllSongs
+	addAllSongs: addAllSongs,
+	uuid: uuid
 }

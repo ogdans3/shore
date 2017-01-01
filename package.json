@@ -23,8 +23,10 @@
     "fluent-ffmpeg": "^2.1.0",
     "handlebars": "^4.0.6",
     "musicmetadata": "^2.0.5",
+    "mv": "^2.1.1",
     "nedb": "^1.8.0",
     "recursive-readdir": "^2.1.0",
+    "uuid": "^3.0.1",
     "youtube-playlist-info": "^0.1.0",
     "ytdl-core": "^0.7.21"
   }

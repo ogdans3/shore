@@ -4,59 +4,28 @@ var mm = require('musicmetadata');
 var path = require("path");
 
 var songDB;
-
-var getFileName = function(filepath){
-	return path.basename(filepath, path.extname(filepath));
-}
-
-var addSong = function(db, song, cb){
-	db.find({title: song.title}, function(err, docs){
-		if(err)
-			console.log(err);
-		else{
-			if(docs.length == 0){				
-				db.insert(song, function(err, doc){
-					console.log("Insert of new song", "Error", err, "NewDoc", doc);
-					cb();
-				});
-			}else
-				console.log("Song already inserted");
-		}
-		cb();
-	});
-}
-
-var processSongs = function(files){
-	console.log(files);
-	var filepath = files.shift();
-	console.log(filepath);
-	var parser = mm(fs.createReadStream(filepath), {duration: true}, function(err, metadata){
-		if(err){
-			console.log("Error happened", filepath, err);
-			return;
-		} 
-		console.log(metadata);
-		//TODO: Add more fields here
-		var song = {
-			title: getFileName(filepath),
-			duration: metadata.duration
-		}
-		console.log("Song", song);
-		addSong(songDB, song, function(){
-			if(files.length > 0)
-				processSongs(files);
-		});
-	});
-}
 	
-module.exports = function(app, path){
-	var songFolder = path || app.get("config").paths.songs;
+module.exports = function(app){
+	var songs = require(path.join(path.join(__dirname, "/.."), "/songs"));	
+	var songFolder = app.get("config").paths.songs;
+	var util = require(app.get("config").paths.util);
+
 	songDB = app.get("dbs").songs;
 	
 	recursive(songFolder, function(err, files){
 		// Files is an array of filename 
-		console.log(files);
+		var objects = [];
+		for(var i = 0; i < files.length; i++){
+			objects.push({
+				url: files[i],
+				method: "local"
+			});
+		}
 
-		processSongs(files);
+		if(objects.length > 0){
+			util.addAllSongs(songs, songFolder, objects);
+		}
+
+//		processSongs(files);
 	});
 }

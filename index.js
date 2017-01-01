@@ -31,7 +31,9 @@ watch(app, function(list){
 	var songs = require(app.get("config").paths.src.srcPath + "/songs");
 	var path = app.get("config").paths.songs;
 
-	util.addAllSongs(songs, path, list);	
+	util.addAllSongs(songs, path, list, function(){
+		console.log("Initial scan of all watched objects has ended");
+	});
 });
 
 //Create all the routes for the application
@@ -41,3 +43,4 @@ require(app.get("config").paths.routes).createRoutes(app);
 //Final setup
 app.listen(2000)
 console.log("Listening to port 2000");
+

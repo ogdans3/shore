@@ -3,7 +3,7 @@ var newPlaylist = function(){
 	var title  = prompt("Playlist title", "")
 	if(title != null){
 		$.post("/api/playlist/new", {title: title, songs: []}, function(res){
-			console.log(res);
+//			console.log(res);
 		})
 	}
 }
@@ -19,7 +19,6 @@ var getAllPlaylists = function(){
 				playlists.push(res[i]);
 			}
 		}
-		console.log("Playlists", playlists);
 	})
 }
 
@@ -32,7 +31,6 @@ var getAllSongs = function(){
 			}else
 				songs.push(res[i]);
 		}
-		console.log("Songs", songs);
 	})
 }
 

@@ -7,46 +7,6 @@ var fs = require("fs");
 
 var util;
 
-var getFileName = function(filepath){
-        return path.basename(filepath, path.extname(filepath));
-}
-
-var addSong = function(db, song, cb){
-        db.find({title: song.title}, function(err, docs){
-                if(err)
-                        console.log(err);
-                else{
-                        if(docs.length == 0){
-                                db.insert(song, function(err, doc){
-                                        console.log("Insert of new song", "Error", err, "NewDoc", doc);
-                                        cb();
-                                });
-                        }else{
-                                console.log("Song already inserted");
-                		cb();
-			}
-		}
-        });
-}
-
-var processSong = function(filepath, cb){
-	 var parser = mm(fs.createReadStream(filepath), {duration: true}, function(err, metadata){
-                if(err){
-                        console.log("Error happened", filepath, err);
-                        return;
-                }
-                console.log(metadata);
-                //TODO: Add more fields here
-                var song = {
-                        title: getFileName(filepath),
-                        duration: metadata.duration
-                }
-                console.log("Song", song);
-		cb(song);
-        });
-}
-
-
 //Create all routes for the application
 exports.createRoutes = function(app){
 	util = require(app.get("config").paths.util);
@@ -89,15 +49,18 @@ exports.createRoutes = function(app){
 	//Define post requests
 	app.post("/api/watch/scan", function(req, res){
 		app.get("watch")(app, function(list){
-			console.log("List", list);
-//			songs.add("");
+			var songs = require(app.get("config").paths.src.srcPath + "/songs");
+			var path = app.get("config").paths.songs;
+
+			util.addAllSongs(songs, path, list, function(){
+//				res.send("Finished scan");
+			});
 		});
 		res.send("Scan initialised");
-	})
+	});
 
 	app.post("/api/watch/new", function(req, res){
 		console.log("Add new watched object");
-		console.log(req.body);
 
 		var db = app.get("dbs").watch;
 		var watched = {
@@ -109,7 +72,6 @@ exports.createRoutes = function(app){
 			if(results.length == 0){
 				db.insert(watched, function(err, newDoc){
 					if(err){
-						console.log("Error", err);
 						res.send("Unable to add watched object", err);
 					}else{
 						res.send("Watched object was added");
@@ -143,18 +105,12 @@ exports.createRoutes = function(app){
 
 	app.post("/api/scan/rescan", function(req, res){
 		console.log("Perform a rescan of the library");
-		console.log(req.body);
-
-		//TODO: this needs to overwrite a path that is written into a txt file or something. 
-		//So that on a restart of the server the same library is accessed
-		var path = req.body.libraryPath;
-		scan(app, path);
+		scan(app);
 	})
 
 
 	app.post("/api/playlist/new", function(req, res){
-		console.log("New playlist");
-		console.log(req.body)
+		console.log("Add new playlist");
 		var playlist = {
 			title: req.body.title,
 			songs: req.body.songs || [],
@@ -172,11 +128,9 @@ exports.createRoutes = function(app){
 
 	app.post("/api/playlist/add", function(req, res){
 		console.log("Add song to playlist");
-		console.log(req.body);
 		
 		app.get("dbs").songs.find({_id: req.body.songId}).exec(function(err, songs){
 			var song = songs[0];
-			console.log(song);
 			if(song === undefined || song === null){
 				res.send("Undefined song");
 				return;
@@ -194,12 +148,9 @@ exports.createRoutes = function(app){
 						}
 					}
 					app.get("dbs").playlists.update({_id: req.body.playlistId}, {$push: {songs: song}}, function(err, newDoc){
-						console.log("Song added");
-						console.log("Error", err);
-						console.log("New doc", newDoc)
 			    		//TODO: Handle error
 						if(err)
-							res.send("Error");
+							res.send("Error", err);
 						else
 							res.send("Song added");
 			        });

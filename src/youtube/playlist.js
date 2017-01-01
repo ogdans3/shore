@@ -44,7 +44,6 @@ var scan = function(url, db, cb){
 				console.log("An error happened, unable to scan playlist")
 				return;
 			}
-			console.log("Result from the diff", result);
 			cb(result);
 		});
 	});
