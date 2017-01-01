@@ -10,8 +10,8 @@ var addAllSongs = function(songsModule, path, list){
 					console.log("Unable to add song")
 				console.log(what, diag);
 			});
-		}catch(){
-			cb(processElement);			
+		}catch(e){
+			cb(processElement);
 		}
 	}
 	processListSync(list, processElement);
