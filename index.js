@@ -34,8 +34,9 @@ watch(app, function(list){
 	var songs = require(app.get("config").paths.src.srcPath + "/songs");
 	var path = app.get("config").paths.songs;
 
-	util.addAllSongs(songs, path, list, function(){
+	util.addAllSongs(songs, path, list, function(successList, failList){
 		console.log("Initial scan of all watched objects has ended");
+		console.log("Succesfully added", successList.length, "of", successList.length + failList.length, "songs");
 	});
 });
 
