@@ -1,3 +1,5 @@
+Error.stackTraceLimit = Infinity;
+
 var express = require('express'),
     path = require("path");
 var exphbs  = require('express-handlebars');

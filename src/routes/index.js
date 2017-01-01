@@ -56,7 +56,7 @@ exports.createRoutes = function(app){
 
 	//Define get requests
 	app.get('/song/:id', function (req, res){
-	    res.sendFile(path.join(config.paths.songs, req.params.id));
+	    res.sendFile(path.join(config.paths.songs, req.params.id + ".mp3"));
 	});
 
 	app.get("/webpage/js/:script", function(req, res){

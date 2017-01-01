@@ -9,8 +9,10 @@ var addAllSongs = function(songsModule, path, list){
 				else
 					console.log("Unable to add song")
 				console.log(what, diag);
+				cb(processElement);
 			});
 		}catch(e){
+			console.log("We had an error", e);
 			cb(processElement);
 		}
 	}

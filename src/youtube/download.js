@@ -10,7 +10,7 @@ module.exports = function(path, url, cb){
 	ytdl.getInfo(url, function(err, info){
 		if(err){
 			console.log("Error occured", err);
-			return;
+			cb(err);
 		}else{
 			console.log("Title: ", info.title);
 			var downloadStream = ytdl(url, {
