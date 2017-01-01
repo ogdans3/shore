@@ -2,14 +2,17 @@ var addAllSongs = function(songsModule, path, list){
 	var processElement = function(element, cb){
 		console.log("Element", element);
 
-		songsModule.add(element.method, element.url, path, function(what, diag){
-			if(!diag)
-				console.log("Song added");
-			else
-				console.log("Unable to add song")
-			console.log(what, diag);
-			cb(processElement);
-		});
+		try{
+			songsModule.add(element.method, element.url, path, function(what, diag){
+				if(!diag)
+					console.log("Song added");
+				else
+					console.log("Unable to add song")
+				console.log(what, diag);
+			});
+		}catch(){
+			cb(processElement);			
+		}
 	}
 	processListSync(list, processElement);
 }
