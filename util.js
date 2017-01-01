@@ -17,7 +17,8 @@ var addAllSongs = function(songsModule, path, list, finalCB){
 	}
 	processListSync(list, processElement, function(successList, failList){
 		console.log("Succesfully added", successList.length, "of", successList.length + failList.length, "songs");
-		finalCB(successList, failList);
+		if(finalCB)
+			finalCB(successList, failList);
 	}, [], []);
 }
 
