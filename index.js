@@ -11,6 +11,9 @@ var util = require(__dirname + "/util");
 //Set config for the application
 app.set("config", require(__dirname + "/config")(app));
 
+//Create all directories that are not yet present in the local file systems
+require(__dirname + "/createDirs")(app);
+
 //Set all the databases for the application
 app.set("dbs", require(__dirname + "/db")(app));
 

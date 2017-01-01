@@ -22,6 +22,7 @@
     "express-handlebars": "^3.0.0",
     "fluent-ffmpeg": "^2.1.0",
     "handlebars": "^4.0.6",
+    "mkdirp": "^0.5.1",
     "musicmetadata": "^2.0.5",
     "mv": "^2.1.1",
     "nedb": "^1.8.0",

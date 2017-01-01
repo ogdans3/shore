@@ -15,11 +15,16 @@ function Config(app){
 						css: path.join(staticPath, "/css"),
 						images: path.join(staticPath, "/images"),
 					}
+
 	var songs = path.join(__dirname, "/songs");
 	var routes = path.join(srcPath, "/routes"); 
 	var db = path.join(__dirname, "/db");
 	var youtubeSrc = path.join(srcPath, "/youtube");
 	var util = path.join(__dirname, "/util");
+
+	var neededDirs = [
+		songs, db
+	]
 
 	var src = {
 		srcPath: srcPath,
@@ -27,6 +32,7 @@ function Config(app){
 	}
 
 	self.paths = {static: static, songs: songs, routes: routes, db: db, src: src, util: util};
-	
+	self.dirs = neededDirs;
+
 	console.log("Config object:", self)
 }
