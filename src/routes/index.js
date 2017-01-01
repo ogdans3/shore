@@ -19,10 +19,11 @@ var addSong = function(db, song, cb){
                                         console.log("Insert of new song", "Error", err, "NewDoc", doc);
                                         cb();
                                 });
-                        }else
+                        }else{
                                 console.log("Song already inserted");
-                }
-                cb();
+                		cb();
+			}
+		}
         });
 }
 
