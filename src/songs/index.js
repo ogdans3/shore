@@ -4,6 +4,27 @@ var ytdl = require(path.join(path.join(__dirname, "/.."), "/youtube/download.js"
 var mm = require('musicmetadata');
 var app;
 
+var getFileName = function(filepath){
+        return path.basename(filepath, path.extname(filepath));
+}
+
+var addSong = function(db, song, cb){
+        db.find({title: song.title}, function(err, docs){
+                if(err)
+                        console.log(err);
+                else{
+                        if(docs.length == 0){
+                                db.insert(song, function(err, doc){
+                                        console.log("Insert of new song", "Error", err, "NewDoc", doc);
+                                        cb();
+                                });
+                        }else{
+                                console.log("Song already inserted");
+                		cb();
+			}
+		}
+        });
+}
 
 var processSong = function(filepath, cb){
 	var parser = mm(fs.createReadStream(filepath), {duration: true}, function(err, metadata){
