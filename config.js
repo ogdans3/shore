@@ -13,13 +13,19 @@ function Config(app){
 						html: path.join(staticPath, "/html"),
 						js: path.join(staticPath, "/js"),
 						css: path.join(staticPath, "/css"),
-						images: path.join(staticPath, "/images")
+						images: path.join(staticPath, "/images"),
 					}
 	var songs = path.join(__dirname, "/songs");
 	var routes = path.join(srcPath, "/routes"); 
 	var db = path.join(__dirname, "/db");
+	var youtubeSrc = path.join(srcPath, "/youtube");
 
-	self.paths = {static: static, songs: songs, routes: routes, db: db};
+	var src = {
+		srcPath: srcPath,
+		youtube: youtubeSrc
+	}
+
+	self.paths = {static: static, songs: songs, routes: routes, db: db, src: src};
 	
 	console.log("Config object:", self)
 }

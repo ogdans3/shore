@@ -25,6 +25,7 @@
     "musicmetadata": "^2.0.5",
     "nedb": "^1.8.0",
     "recursive-readdir": "^2.1.0",
+    "youtube-playlist-info": "^0.1.0",
     "ytdl-core": "^0.7.21"
   }
 }

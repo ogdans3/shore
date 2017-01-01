@@ -1,4 +1,5 @@
 var path = require("path");
+var songs = require(path.join(path.join(__dirname, "/.."), "/songs"));
 var scan = require(path.join(path.join(__dirname, "/.."), "/scan")); //TODO: Clean this up, should prob use the app file paths
 var ytdl = require(path.join(path.join(__dirname, "/.."), "/youtube/download.js")); //TODO: Clean this up, should prob use the app file paths
 var mm = require('musicmetadata');
@@ -47,6 +48,7 @@ var processSong = function(filepath, cb){
 
 //Create all routes for the application
 exports.createRoutes = function(app){
+	songs.initialise(app);
 	var config = app.get("config");
 
 	//Define get requests
@@ -82,29 +84,48 @@ exports.createRoutes = function(app){
 
 
 	//Define post requests
-	app.post("/api/songs/new", function(req, res){
-		console.log("Add new song");
-		console.log(req.body);
-		var path = app.get("config").paths.songs;
+	app.post("/api/watch/scan", function(req, res){
+		app.get("watch")(app, function(list){
+			console.log("List", list);
+//			songs.add("");
+		});
+		res.send("Scan initialised");
+	})
 
-		switch(req.body.method){
-			case "youtube":
-				ytdl(path, req.body.url, function(err, finalPath){
-					if(err)
-						res.send("Unable to add song", err);
-					else{
-						processSong(finalPath, function(song){
-							addSong(app.get("dbs").songs, song, function(){
-								res.send("Song added1");
-							});
-						});
+	app.post("/api/watch/new", function(req, res){
+		console.log("Add new watched object");
+		console.log(req.body);
+
+		var db = app.get("dbs").watch;
+		var watched = {
+			method: req.body.method,
+			url: req.body.url
+		};
+
+		db.find({url: watched.url}).exec(function(err, results){
+			if(results.length == 0){
+				db.insert(watched, function(err, newDoc){
+					if(err){
+						console.log("Error", err);
+						res.send("Unable to add watched object", err);
+					}else{
+						res.send("Watched object was added");
 					}
+					//The object was added, so we scan all the objects.
+					app.get("watch")(app);
 				});
-				break;
-			default:
-				console.log("Default method for adding a new song is returning an error");
-				res.send("Unknown method for adding a song");
-		}
+			}else{
+				res.send("Watched object was already added");
+				//The object was already present but we want to rescan the object to find new entities
+				//Most likely there will be something new or else the user would probably not try to add it again
+				app.get("watch")(app);
+			}
+		})
+	})
+
+
+	app.post("/api/songs/new", function(req, res){
+		songs.addFromRequest(req, res);
 	});
 
 	app.post("/api/scan/rescan", function(req, res){
