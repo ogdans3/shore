@@ -12,7 +12,10 @@ var getFileName = function(filepath){
 }
 
 var addSong = function(db, song, cb){
-	db.find({_id: song._id}, function(err, docs){
+	console.log("Song to add", song);
+	
+	db.find({$or: [{_id: song._id}, {title: song.title}, {_id: song.title}, {title: song._id}]}).exec(function(err, docs){
+		console.log(err, docs);
 		if(err)
 			cb(err)
 		else{
@@ -90,7 +93,6 @@ var mvFile = function(song, newPath, cb){
 
 var add = function(method, url, path, cb){
 	var songFolder = app.get("config").paths.songs;
-
 	switch(method){
 		case "youtube":
 			addFromYoutube(path, url, function(song, err){
