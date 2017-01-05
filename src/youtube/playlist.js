@@ -29,6 +29,7 @@ var scan = function(url, db, cb){
 	var list = [];
 
 	ypi.playlistInfo("AIzaSyB5j-INQByclZqToXkyW-LVJCqXOS7HjrU", url, function(playlistItems) {
+		
 		for(var i = 0; i < playlistItems.length; i++){
 			var obj = playlistItems[i];
 			var song = {

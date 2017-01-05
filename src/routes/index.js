@@ -4,6 +4,7 @@ var scan = require(path.join(path.join(__dirname, "/.."), "/scan")); //TODO: Cle
 var ytdl = require(path.join(path.join(__dirname, "/.."), "/youtube/download.js")); //TODO: Clean this up, should prob use the app file paths
 var mm = require('musicmetadata');
 var fs = require("fs");
+var moment = require("moment");
 
 var util;
 
@@ -22,12 +23,20 @@ exports.createRoutes = function(app){
 		});
 	});
 
+	app.get("/webpage/js/lib/:where/:script", function(req, res){
+	    res.sendFile(path.join(path.join(config.paths.src.lib, req.params.where), req.params.script));
+	});
 	app.get("/webpage/js/:script", function(req, res){
 	    res.sendFile(path.join(config.paths.static.js, req.params.script));
+	});
+
+	app.get("/webpage/css/lib/:where/:style", function(req, res){
+	    res.sendFile(path.join(path.join(config.paths.src.lib, req.params.where), req.params.style));
 	});
 	app.get("/webpage/css/:style", function(req, res){
 	    res.sendFile(path.join(config.paths.static.css, req.params.style));
 	});
+
 	app.get("/webpage/image/:image", function(req, res){
 	    res.sendFile(path.join(config.paths.static.images, req.params.image));
 	});
@@ -51,14 +60,7 @@ exports.createRoutes = function(app){
 
 	//Define post requests
 	app.post("/api/watch/scan", function(req, res){
-		app.get("watch")(app, function(list){
-			var songs = require(app.get("config").paths.src.srcPath + "/songs");
-			var path = app.get("config").paths.songs;
-
-			util.addAllSongs(songs, path, list, function(){
-//				res.send("Finished scan");
-			});
-		});
+		app.get("watch")(app);
 		res.send("Scan initialised");
 	});
 
@@ -68,35 +70,30 @@ exports.createRoutes = function(app){
 		var db = app.get("dbs").watch;
 		var watched = {
 			method: req.body.method,
-			url: req.body.url
+			url: req.body.url,
+			howOften: parseInt(req.body.howOften) || 24,
+			lastScan: moment().unix()
 		};
-
+		if(watched.url == ""){
+			res.status(401).send("Empty url");
+			return;
+		}
 		db.find({url: watched.url}).exec(function(err, results){
 			if(results.length == 0){
 				db.insert(watched, function(err, newDoc){
 					if(err){
-						res.send("Unable to add watched object", err);
+						res.status(500).send("Unable to add watched object", err);
 					}else{
-						res.send("Watched object was added");
+						res.send("Playlist was added to watch list");
 					}
 					//The object was added, so we scan all the objects.
-					app.get("watch")(app, function(list){
-						var songs = require(app.get("config").paths.src.srcPath + "/songs");
-						var path = app.get("config").paths.songs;
-
-						util.addAllSongs(songs, path, list);	
-					});
+					app.get("schedule")(app);
 				});
 			}else{
 				res.send("Watched object was already added");
 				//The object was already present but we want to rescan the object to find new entities
 				//Most likely there will be something new or else the user would probably not try to add it again
-				app.get("watch")(app, function(list){
-					var songs = require(app.get("config").paths.src.srcPath + "/songs");
-					var path = app.get("config").paths.songs;
-
-					util.addAllSongs(songs, path, list);	
-				});
+				app.get("watch")(app);
 			}
 		})
 	})

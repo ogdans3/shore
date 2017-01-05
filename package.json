@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -23,9 +24,11 @@
     "fluent-ffmpeg": "^2.1.0",
     "handlebars": "^4.0.6",
     "mkdirp": "^0.5.1",
+    "moment": "^2.17.1",
     "musicmetadata": "^2.0.5",
     "mv": "^2.1.1",
     "nedb": "^1.8.0",
+    "node-schedule": "^1.2.0",
     "recursive-readdir": "^2.1.0",
     "uuid": "^3.0.1",
     "youtube-playlist-info": "^0.1.0",

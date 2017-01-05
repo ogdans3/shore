@@ -23,6 +23,10 @@ var addAllSongs = function(songsModule, path, list, finalCB){
 }
 
 var processListSync = function(list, func, finalCB, successList, failList){
+	if(list === undefined || list === null || list.length == 0){
+		finalCB(successList, failList);
+		return;
+	}
 	var ele = list.shift();
 	func(ele, function(func){
 		if(list.length > 0)

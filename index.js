@@ -1,12 +1,18 @@
 Error.stackTraceLimit = Infinity;
 
+//Express requirements
 var express = require('express'),
     path = require("path");
 var exphbs  = require('express-handlebars');
 var bodyParser = require("body-parser");
 var app = express();
 
+//Functional requirements
+var moment = require("moment");
+
+//Required functions that are not npm modules
 var util = require(__dirname + "/util");
+var schedule = require(__dirname + "/schedule");
 
 //Set config for the application
 app.set("config", require(__dirname + "/config")(app));
@@ -29,15 +35,13 @@ app.set('view engine', 'handlebars');
 
 //Initialise all watched playlists and folders to find new songs and so on
 var watch = require(__dirname + "/watch");
+watch.init(app);
 app.set("watch", watch);
-watch(app, function(list){
-	var songs = require(app.get("config").paths.src.srcPath + "/songs");
-	var path = app.get("config").paths.songs;
 
-	util.addAllSongs(songs, path, list, function(successList, failList){
-		console.log("Initial scan of all watched objects has ended");
-	});
-});
+//Schedule to scan all watchlists
+app.set("schedule", schedule);
+schedule.init(app);
+schedule.all(app);
 
 //Create all the routes for the application
 require(app.get("config").paths.routes).createRoutes(app);
