@@ -21,12 +21,14 @@ function Config(app){
 	var db = path.join(__dirname, "/db");
 	var youtubeSrc = path.join(srcPath, "/youtube");
 	var util = path.join(__dirname, "/util");
+	var lib = path.join(srcPath, "/lib");
 
 	var neededDirs = [
 		songs, db
 	]
 
 	var src = {
+		lib: lib,
 		srcPath: srcPath,
 		youtube: youtubeSrc
 	}
