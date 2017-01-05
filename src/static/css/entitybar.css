@@ -1,7 +1,7 @@
 .entitybar.container{
-	background-color: red;
 	width: 250px;
 	padding-top: 20px;
+	border: 2px solid black;
 }
 
 .entitybar ul{
@@ -15,4 +15,11 @@
 
 .entitybar h2{
 	font-weight: normal;
+}
+
+.btn-newPlaylist{
+	padding-top: 2px;
+	padding-bottom: 2px;
+	padding-left: 15px;
+	padding-right: 15px;
 }

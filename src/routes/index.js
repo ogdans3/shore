@@ -75,7 +75,7 @@ exports.createRoutes = function(app){
 			lastScan: moment().unix()
 		};
 		if(watched.url == ""){
-			res.status(401).send("Empty url");
+			res.status(400).send("Empty url");
 			return;
 		}
 		db.find({url: watched.url}).exec(function(err, results){
@@ -87,13 +87,13 @@ exports.createRoutes = function(app){
 						res.send("Playlist was added to watch list");
 					}
 					//The object was added, so we scan all the objects.
-					app.get("schedule")(app);
+					app.get("schedule").single(watched);
 				});
 			}else{
 				res.send("Watched object was already added");
 				//The object was already present but we want to rescan the object to find new entities
 				//Most likely there will be something new or else the user would probably not try to add it again
-				app.get("watch")(app);
+				app.get("schedule").single(results[0]);
 			}
 		})
 	})
@@ -116,11 +116,16 @@ exports.createRoutes = function(app){
 			songs: req.body.songs || [],
 			editable: true
 		};
-
+		
+		if(playlist.title == ""){
+			res.status(400).send("Empty playlist not allowed");
+			return;
+		}
+		
 		app.get("dbs").playlists.insert(playlist, function(err, newDoc){
     		//TODO: Handle error
 			if(err)
-				res.send("Error");
+				res.status(500).send(err);
 			else
 				res.send(newDoc);
 		})

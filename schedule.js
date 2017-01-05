@@ -36,6 +36,10 @@ var wrapper = function(timeLeft, doc){
     });                
 }
 
+var single = function(doc){
+    wrapper(0, doc);
+}
+
 var scheduleAll = function(app){
     app.get("dbs").watch.find({}).exec(function(err, docs){
         if(err){
@@ -69,7 +73,7 @@ var init = function(app){
 }
 
 module.exports = {
-    single: schedule,
+    single: single,
     all: scheduleAll,
     init: init
 }

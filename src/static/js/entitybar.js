@@ -1,18 +1,37 @@
 //This function creates a new playlist
-var newPlaylist = function(){
-	var title  = prompt("Playlist title", "")
-	if(title != null){
-		$.post("/api/playlist/new", {title: title, songs: []}, function(res){
-//			console.log(res);
+var newPlaylist = function(){	
+	swal({
+		title: "Playlist title",
+		input: "text",
+		showCancelButton: true,
+		confirmButtonText: "Add",
+		showLoaderOnConfirm: true,
+		preConfirm: function(title){
+			return new Promise(function(resolve, reject){
+				$.post("/api/playlist/new", {title: title, songs: []}, function(res){
+					resolve();
+				}).fail(function(err){
+					console.log(err);
+					reject(err.responseText);
+				});
+			})
+		},
+		allowOutsideClick: true,
+	}).then(function (email) {
+		swal({
+			type: 'success',
+			title: "Playlist added",
 		})
-	}
+		getAllPlaylists();
+	});
 }
 
 //This requests all the playlists from the server
 var getAllPlaylists = function(){
 	$.get("/api/get/playlists", function(res){
 		for(var i = 0; i < res.length; i++){
-			if(getPlaylistIndex(res[i]) != -1){
+			console.log(res);
+			if(getPlaylistIndex(res[i]) > -1){
 				playlists[getPlaylistIndex(res[i])] = res[i];
 			}else{
 				addPlaylistToList(res[i]);
@@ -66,7 +85,7 @@ var addPlaylistToList = function(playlistObj){
 	string += "</li>";
 
 	var ele = $(string);
-	ele.click(function(){showPlaylist(playlistObj)});
+	ele.click(function(){showPlaylist(getPlaylistIndex(playlistObj))});
 	$("#entitybar ul.playlists").append(ele);
 
 	ele.on("drop", drop);

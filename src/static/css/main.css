@@ -2,6 +2,20 @@ html, body{
 	height: 100%;
 	width: 100%;
 	margin: 0px;
+	font-size: 20px;
+}
+
+.awesome-blue{
+	background-color: #29e;
+}
+.awesome-red{
+	background-color: #ff130c;
+}
+.awesome-dark{
+		background-color: #171b1e;
+}
+.awesome-orange{
+	background-color: #E94E3D;
 }
 
 .pointer:hover{
@@ -21,4 +35,15 @@ ul.pretty{
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+button{
+	border-radius: 0px !important;
+}
+.btn-small{
+	padding: 10px;
+}
+
+.alignRight{
+	text-align: right;
 }

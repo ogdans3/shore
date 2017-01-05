@@ -1,5 +1,6 @@
 //This function shows all the songs in the playlist in the main view of the application
-var showPlaylist = function(playlistObj){
+var showPlaylist = function(playlistObjIndex){
+	var playlistObj = playlists[playlistObjIndex];
 	$("#songList").empty();
 
 	console.log(playlistObj.songs);
@@ -32,7 +33,7 @@ var getSongElement = function(songObj){
 	li += "</span>";
 
 	li += "<span class = 'flex grow textAlignCenter second alignRight'>";
-	li += songObj.duration || "Unknown";
+	li += transformSecondsToTime(songObj.duration) || "Unknown";
 	li += "</span>"
 
 	li += "</span></li>";
@@ -51,3 +52,5 @@ var addFakeSongs = function(playlistObj){
 	songs = fakeSongs;
 	playlistObj.songs = fakeSongs;
 }
+
+setTimeout(showAllSongs, 500); //Wait 500 milliseoncds then display all songs

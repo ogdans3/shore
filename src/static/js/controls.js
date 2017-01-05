@@ -48,13 +48,6 @@ var createControlEventHandlers = function(){
 	});
 }
 
-var transformSecondsToTime = function(d){
-	d = Number(d);
-	var m = Math.floor(d / 60);
-	var s = Math.floor(d % 60);
-	return (m + ":" + (s < 10 ? "0" : "") + s);
-}
-
 var trackEnded = function(){
 	if(repeat){
 		repeatTrack();
@@ -138,6 +131,7 @@ var addNewTrackToPlaylist = function(song, playlist){
 	$.post("/api/playlist/add", {songId: song._id, playlistId: playlist._id}, function(res){
 		console.log("Response", res);
 		//TODO: Handle error for unable to add song to playlist
+		getAllPlaylists();
 	})
 }
 

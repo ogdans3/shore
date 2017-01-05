@@ -1,10 +1,10 @@
 .mainView.container{
 	flex-grow: 1;
-	background: blue;
+	padding-right: 20px;
 /*	overflow: auto;*/
 }
 
-.listTitle{
+.listTitles{
 	width: 100%;
 	height: 30px;
 	display: flex;
@@ -34,6 +34,11 @@
 	width: 100%;
 	flex-grow: 1;
 	display: flex;
+
+	height: 50px;
+	line-height: 50px;
+	
+	
 }
 
 .container.song.element span{
