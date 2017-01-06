@@ -1,0 +1,143 @@
+/* The container styles */
+.varsel-container{
+	    display: flex;
+
+	        margin-top: 4px;
+		    margin-bottom: 4px;
+
+		        min-width: 400px;
+			    max-height: 1000px;
+			        
+			        overflow: hidden;
+				    opacity: 1;
+			    }
+
+
+			    /* The global container styles, the container that contains all the notifications */
+			    .varsel-main{
+				        display: block;
+					    width: 400px;
+					        position: fixed;
+						    top: 10px;
+						        right: 10px;
+						}
+
+
+						/* Icon styles */
+						.varsel-icon{
+							    width: 30px;
+							        line-height: 50px;
+							}
+
+							.varsel-icon:before{
+								    display: inline-block;
+								        width: 30px;
+									    height: 100%;
+									        
+									        text-align: center;
+										    font-weight: 900;
+										        font-size: 27px;
+
+											    color: #FFF0F5;
+										    }
+
+
+										    /* Body styles*/
+										    .varsel-body{
+											        line-height: 100%;
+												    padding-left: 20px;
+												        flex: 1 1 0;
+													    min-width: 0px;
+												    }
+
+												    .varsel-body-line{
+													        padding-top: 10px;
+														    line-height: 30px;
+														        width: 100%;
+															    overflow-wrap: break-word;
+														    }
+
+
+														    /* Close-button styles */
+														    .varsel-close-button{
+															        position: relative;
+																    top: 2px;
+																        right: 4px;
+																	    border-radius: 5px;
+																	        height: 20px;
+																		    font-weight: 500;
+																		        font-size: 30px;
+																		}
+																		.varsel-close-button:hover{
+																			    font-weight: 900;
+																			        cursor: pointer;
+																			}
+																			.varsel-close-button:before{
+																				    content: "\00d7";
+																			    }
+
+
+																			    /* All notiication types */
+
+																			    /* Sucess */
+																			    .varsel-type-success .varsel-icon{
+																				        background-color: #2DAD57;
+																				}
+																				.varsel-type-success{
+																					    background-color: #57CD7E;
+																				    }
+																				    .varsel-type-success .varsel-icon:before{
+																					        content: "\2713";
+																					}
+
+																					/* Info */
+																					.varsel-type-info .varsel-icon{
+																						    background-color: #29e;
+																					    }
+																					    .varsel-type-info{
+																						        background-color: #70B8F4;
+																						}
+																						.varsel-type-info .varsel-icon:before{
+																							    content: "\2139";
+																						    }
+
+																						    /* Warning */
+																						    .varsel-type-warning .varsel-icon{
+																							        background-color: #FFA71A;
+																							}
+																							.varsel-type-warning{
+																								    background-color: #FEC56A;
+																							    }
+																							    .varsel-type-warning .varsel-icon:before{
+																								        content: "\0021";
+																								}
+
+																								/* Error */
+																								.varsel-type-error .varsel-icon{
+																									    background-color: #ff130c;
+																								    }
+																								    .varsel-type-error{
+																									        background-color: #F85E59;
+																									}
+																									.varsel-type-error .varsel-icon:before{
+																										    content: "\26A0";
+																									    }
+
+
+																									    /* Key frames and animation classes */
+																									    .varsel-destroy-animation{
+																										        -webkit-animation: varsel-destroy-animation .12s;
+																										}
+																										.varsel-create-animation{
+																											    -webkit-animation: varsel-create-animation .12s;
+																										    }
+
+
+																										    @-webkit-keyframes varsel-create-animation {
+																											        0% { opacity: 0; transform: scale(0); }
+																												  100% { opacity: 1; transform: scale(1); }
+																											  }
+																											  @-webkit-keyframes varsel-destroy-animation {
+																												      0% { opacity: 1; transform: scale(1); }
+																												        100% { opacity: 0; transform: scale(.5); }
+																												}

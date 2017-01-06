@@ -131,8 +131,11 @@ var addNewTrackToPlaylist = function(song, playlist){
 	$.post("/api/playlist/add", {songId: song._id, playlistId: playlist._id}, function(res){
 		console.log("Response", res);
 		//TODO: Handle error for unable to add song to playlist
+		varsel(res);
 		getAllPlaylists();
-	})
+	}).fail(function(err){
+		varsel({type: "error", text: err.responseText});
+	});
 }
 
 

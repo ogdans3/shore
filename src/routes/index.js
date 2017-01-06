@@ -137,13 +137,13 @@ exports.createRoutes = function(app){
 		app.get("dbs").songs.find({_id: req.body.songId}).exec(function(err, songs){
 			var song = songs[0];
 			if(song === undefined || song === null){
-				res.send("Undefined song");
+				res.status(400).send("Undefined song");
 				return;
 			}
 			
 			app.get("dbs").playlists.find({_id: req.body.playlistId}, function(err, playlists){
 				if(err){
-					res.send("Error, unable to find playlist");
+					res.status(500).send("Error, unable to find playlist");
 				}else{
 					var playlist = playlists[0];
 					for(var i = 0; i < playlist.songs.length; i++){
@@ -155,7 +155,7 @@ exports.createRoutes = function(app){
 					app.get("dbs").playlists.update({_id: req.body.playlistId}, {$push: {songs: song}}, function(err, newDoc){
 			    		//TODO: Handle error
 						if(err)
-							res.send("Error", err);
+							res.status(500).send("Error", err);
 						else
 							res.send("Song added");
 			        });
